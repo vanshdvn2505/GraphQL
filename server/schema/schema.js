@@ -63,7 +63,7 @@ const RootQuery = new GraphQLObjectType({
             args: {id: {type: GraphQLID}},
             resolve(parent, args){
                 // return projects.find(project => project.id == args.id);
-                return Project.findById(args.id);
+                return Project.findById(args.id).exec();
             }
         }
     }
@@ -93,6 +93,11 @@ const mutation = new GraphQLObjectType({
             type: ClientType,
             args: { id: {type: new GraphQLNonNull(GraphQLID)}},
             resolve(parent, args){
+                Project.find({ clientId: args.id }).then((projects) => {
+                    projects.forEach((project) => {
+                      project.deleteOne();
+                    });
+                  });
                 return Client.findByIdAndDelete(args.id).exec();
             }
         },

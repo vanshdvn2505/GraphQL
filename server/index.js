@@ -12,6 +12,7 @@ const PORT = process.env.PORT || 7000;
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 connectDB();
 
@@ -24,7 +25,6 @@ const startServer = async () => {
 
     app.use(
         '/graphql',
-        cors(),
         expressMiddleware(server)
     );
     
